@@ -47,8 +47,19 @@ class ServerlessAppsyncPlugin {
   }
 
   validateSchema() {
+    const awsTypes = `
+      scalar AWSDate
+      scalar AWSTime
+      scalar AWSDateTime
+      scalar AWSTimestamp
+      scalar AWSEmail
+      scalar AWSJSON
+      scalar AWSURL
+      scalar AWSPhone
+      scalar AWSIPAddress
+    `;
     const { schema } = this.loadConfig();
-    const ast = buildASTSchema(parse(schema));
+    const ast = buildASTSchema(parse(`${awsTypes} ${schema}`));
     const errors = validateSchema(ast);
     if (!errors.length) {
       return;
